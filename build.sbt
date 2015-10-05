@@ -11,7 +11,8 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   specs2 % Test,
-  "org.sorm-framework" % "sorm" % "0.3.18"
+  "org.sorm-framework" % "sorm" % "0.3.18",
+  "com.h2database" % "h2" % "1.3.168"
 )
 
 dependencyOverrides += "org.scala-lang" % "scala-compiler" % scalaVersion.value
