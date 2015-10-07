@@ -12,7 +12,8 @@ libraryDependencies ++= Seq(
   ws,
   specs2 % Test,
   "org.sorm-framework" % "sorm" % "0.3.18",
-  "com.h2database" % "h2" % "1.3.168"
+  "com.h2database" % "h2" % "1.3.168",
+  "mysql" % "mysql-connector-java" % "5.1.18"
 )
 
 dependencyOverrides += "org.scala-lang" % "scala-compiler" % scalaVersion.value

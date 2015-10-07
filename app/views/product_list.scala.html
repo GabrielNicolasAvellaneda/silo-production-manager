@@ -1,0 +1,40 @@
+@(items:Stream[Product])(implicit messages: Messages, flash: Flash)
+
+@main("Silo Plant Manager") {
+
+    @content("Product List") {
+
+        @if(!flash.isEmpty) {
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Información:</strong> @flash.get("success")
+        </div>
+        }
+
+        <h2>Listado de productos</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Codigo 1</th>
+                    <th>Codigo 2</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(i <- items) {
+                    <tr ng-repeat="product in ctl.products">
+                        <td>
+                            @i.code1
+                        </td>
+                        <td>
+                            @i.code2
+                        </td>
+                        <td>
+                            @i.description
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

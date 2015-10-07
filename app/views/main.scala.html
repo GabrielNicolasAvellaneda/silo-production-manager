@@ -10,6 +10,7 @@
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
         <script src="@routes.Assets.versioned("javascripts/jquery-2.1.4.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("javascripts/angular.min.js")" type="text/javascript"></script>
     </head>
     <body>
         <div id="wrapper">
@@ -19,7 +20,7 @@
                 <ul class="sidebar-nav">
                     <li class="sidebar-brand">
                         <a href="#">
-                           Silo Plant
+                           Silo Fabric
                         </a>
                     </li>
                     <li>
@@ -29,10 +30,10 @@
                         <a href="@routes.ProductController.newProduct()">Nuevo Producto</a>
                     </li>
                     <li>
-                        <a href="#">Listar Productos</a>
+                        <a href="@routes.ProductController.index()">Listar Productos</a>
                     </li>
                     <li>
-                        <a href="#">Listar Materiales</a>
+                        <a href="@routes.ProductController.index()">Listar Materiales</a>
                     </li>
                 </ul>
             </div>

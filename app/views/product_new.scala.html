@@ -1,7 +1,15 @@
+@(form:Form[ProductNew])(implicit messages: Messages)
+
 @main("Silo Plant Manager") {
 
-    @content("Nuevo Producto") {
+    @content("Product.New") {
 
+       @helper.form(action = routes.ProductController.createProduct) {
+           @helper.inputText(form("code1"))
+           @helper.inputText(form("code2"))
+           @helper.inputText(form("description"))
+            <button type="submit">Guardar</button>
+       }
 
 
     }
