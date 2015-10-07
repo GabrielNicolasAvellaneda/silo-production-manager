@@ -1,8 +1,8 @@
-@(items:Stream[Product])(implicit messages: Messages, flash: Flash)
+@(seachForm: Form[String], items:Stream[Product])(implicit messages: Messages, flash: Flash)
 
 @main("Silo Plant Manager") {
 
-    @content("Product List") {
+    @content("Listado de Productos") {
 
         @if(!flash.isEmpty) {
         <div class="alert alert-info alert-dismissible" role="alert">
@@ -11,7 +11,20 @@
         </div>
         }
 
-        <h2>Listado de productos</h2>
+        <div class="panel panel-default">
+            <div class="panel-heading">Productos</div>
+            <div class="panel-body">
+                <div class="input-group col-lg-5 pull-right">
+                    @helper.form(action=routes.ProductController.search(), 'class -> "navbar-form navbar-right") {
+                        <input type="text" name="query" class="form-control" placeholder="Buscar..." ng-model="ctl.filter">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default" type="button">Ok!</button>
+                        </span>
+                    }
+                </div><!-- /input-group -->
+                <p></p>
+            </div>
+
         <table class="table">
             <thead>
                 <tr>
@@ -36,5 +49,6 @@
                 }
             </tbody>
         </table>
+        </div>
     }
 }

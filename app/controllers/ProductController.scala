@@ -25,9 +25,19 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
     )(ProductNew.apply)(ProductNew.unapply)
   )
 
+  val searchProductForm = Form(
+    single("query" -> text)
+  )
+
   def index = Action { implicit request =>
     val products = Db.query[Product].fetch()
-    Ok(html.product_list(products))
+    Ok(html.product_list(searchProductForm, products))
+  }
+
+  def search = Action { implicit request =>
+    val query = searchProductForm.bindFromRequest().get
+    val products = Db.query[Product].whereLike("description", s"%$query%").fetch()
+    Ok(html.product_list(searchProductForm, products))
   }
 
   def newProduct = Action {
