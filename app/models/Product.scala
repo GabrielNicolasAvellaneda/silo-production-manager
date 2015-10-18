@@ -7,8 +7,11 @@ import play.api.libs.json.Json
  */
 
 case class Product( code1: String = "",
-                    code2: String = "",
-                    description: String = "")
+                    code2: Option[String] = None,
+                    description: String = "",
+                    unit: Option[ProductUnit],
+                    kind: Option[ProductKind]
+                    )
 
 
 /*
@@ -47,7 +50,9 @@ case class Product (code1:String = "",
 
 object Product {
 
-  implicit val productFormat = Json.format[Product]
+  implicit val productKindFormat = Json.format[ProductKind]
+//  implicit val productUnitFormat = Json.format[ProductUnit]
+//  implicit val productFormat = Json.format[Product]
 
 /*  def defaultProduct:Product = {
     Product("", "", "", "", "", 1, "", 0, 0, 0, 0, 0, 0, 0, false).copy()

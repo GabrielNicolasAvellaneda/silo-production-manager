@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import models.{ProductNew, ProductType, Db, Product}
+import models.{ProductNew, Db, Product}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, MessagesApi, Messages, Lang}
@@ -53,7 +53,7 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
         BadRequest(html.product_new(formWithErrors))
       },
       data => {
-        val newProduct = Product(data.code1, data.code2, data.description)
+        val newProduct = Product(data.code1, Some(data.code2), data.description, None, None)
         val result = Db.save(newProduct)
         Redirect(routes.ProductController.index()).flashing("success" -> s"Product ${result.id} creado!")
       }
