@@ -54,9 +54,12 @@ object Product {
   implicit val productUnitFormat = Json.format[ProductUnit]
   implicit val productFormat = Json.format[Product]
 
+  def all = Db.query[Product]
+
   def rawMaterialsQuery = {
     val rawMaterialKind = Db.query[ProductKind].whereEqual("id", 1).fetchOne()
     Db.query[Product].whereEqual("kind", rawMaterialKind)
   }
+
 
 }

@@ -45,15 +45,23 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
     Ok(html.product_new(newProductForm))
   }
 
-  def listProductsApi = Action {
-
-    val rawMaterials = Product.rawMaterialsQuery.fetch()
-    val json = Json.toJson(rawMaterials take 100)
-    Ok(json)
+  def listProductsApi(all: Boolean) = Action {
+    if (all) {
+      val products = Product.all.fetch()
+      Ok(Json.toJson(products take 10))
+    } else {
+      val rawMaterials = Product.rawMaterialsQuery.fetch()
+      val json = Json.toJson(rawMaterials take 10)
+      Ok(json)
+    }
   }
 
-  def listProducts = Action { implicit request =>
-      Ok(html.product_list2())
+  def listProducts(all: Boolean) = Action { implicit request =>
+        if (all) {
+          Ok(html.product_list2("Producto", "Listado", all))
+        } else {
+          Ok(html.product_list2("Materia Prima", "Listado", all))
+        }
   }
 
   def createProduct = Action { implicit request =>

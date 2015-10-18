@@ -1,10 +1,14 @@
-@()(implicit messages: Messages, flash: Flash)
+@(title:String, subtitle:String, kind: Boolean)(implicit messages: Messages, flash: Flash)
 
 @main("Silo Plant Manager") {
 
-    @content("Productos", "Listado") {
+    @content(title, subtitle) {
 
+        @if(kind == None) {
         <script type="text/javascript" src="@routes.Assets.versioned("javascripts/app.product.list.js")"></script>
+        } else {
+        <script type="text/javascript" src="@routes.Assets.versioned("javascripts/app.product.list.js")"></script>
+        }
 
         @if(!flash.isEmpty) {
         <div class="alert alert-info alert-dismissible" role="alert">
