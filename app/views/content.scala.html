@@ -1,4 +1,4 @@
-@(title: String)(content: Html)(implicit messages:Messages)
+@(title: String, subtitle: String = "")(content: Html)(implicit messages:Messages)
 
-<h1>@Messages(title)</h1>
+<h2>@Messages(title) <small>@Messages(subtitle)</small></h2>
 @content

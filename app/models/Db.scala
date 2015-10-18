@@ -9,7 +9,7 @@ object Db extends Instance(
   entities = Seq(Entity[Product](), Entity[ProductItem](), Entity[ProductKind](), Entity[ProductUnit]()),
   url = "jdbc:mysql://localhost:3306/silofabric",
   user = "developer",
-  initMode = InitMode.DropAllCreate
+  initMode = InitMode.DoNothing
 ) {
 
 

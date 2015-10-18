@@ -6,3 +6,8 @@ package models
 case class ProductKind (name:String, description: String) {
 
 }
+
+object ProductKind {
+
+
+}

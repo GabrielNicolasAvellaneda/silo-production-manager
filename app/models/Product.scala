@@ -51,11 +51,12 @@ case class Product (code1:String = "",
 object Product {
 
   implicit val productKindFormat = Json.format[ProductKind]
-//  implicit val productUnitFormat = Json.format[ProductUnit]
-//  implicit val productFormat = Json.format[Product]
+  implicit val productUnitFormat = Json.format[ProductUnit]
+  implicit val productFormat = Json.format[Product]
 
-/*  def defaultProduct:Product = {
-    Product("", "", "", "", "", 1, "", 0, 0, 0, 0, 0, 0, 0, false).copy()
+  def rawMaterialsQuery = {
+    val rawMaterialKind = Db.query[ProductKind].whereEqual("id", 1).fetchOne()
+    Db.query[Product].whereEqual("kind", rawMaterialKind)
   }
-*/
+
 }

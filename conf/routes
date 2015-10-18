@@ -3,7 +3,9 @@
 # ~~~~
 
 # Home page
-GET         /products            controllers.ProductController.index
+GET         /api/products        controllers.ProductController.listProductsApi
+
+GET         /products            controllers.ProductController.listProducts
 
 POST        /products            controllers.ProductController.search
 

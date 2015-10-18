@@ -7,7 +7,7 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, MessagesApi, Messages, Lang}
 import play.api.mvc.{Controller, Action}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsString, Json}
 import sorm.mappings.Mapping
 import play.api.data.format.Formats._
 import views._
@@ -43,7 +43,17 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
   def newProduct = Action {
 
     Ok(html.product_new(newProductForm))
+  }
 
+  def listProductsApi = Action {
+
+    val rawMaterials = Product.rawMaterialsQuery.fetch()
+    val json = Json.toJson(rawMaterials take 100)
+    Ok(json)
+  }
+
+  def listProducts = Action { implicit request =>
+      Ok(html.product_list2())
   }
 
   def createProduct = Action { implicit request =>
@@ -55,7 +65,7 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
       data => {
         val newProduct = Product(data.code1, Some(data.code2), data.description, None, None)
         val result = Db.save(newProduct)
-        Redirect(routes.ProductController.index()).flashing("success" -> s"Product ${result.id} creado!")
+        Redirect(routes.ProductController.listProducts()).flashing("success" -> s"Product ${result.id} creado!")
       }
     )
 

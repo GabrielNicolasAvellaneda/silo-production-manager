@@ -1,0 +1,51 @@
+@()(implicit messages: Messages, flash: Flash)
+
+@main("Silo Plant Manager") {
+
+    @content("Productos", "Listado") {
+
+        <script type="text/javascript" src="@routes.Assets.versioned("javascripts/app.product.list.js")"></script>
+
+        @if(!flash.isEmpty) {
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Información:</strong> @flash.get("success")
+        </div>
+        }
+        <div ng-controller="ProductListCtrl as ctrl" class="panel panel-default">
+            <div class="panel-heading">Productos</div>
+
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Codigo 1</th>
+                    <th>Codigo 2</th>
+                    <th>Descripción</th>
+                    <th>Tipo</th>
+                    <th>Unidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr ng-show="loading">
+                       <td colspan="6">
+                           <p>Cargando...</p>
+                           <div class="progress">
+                               <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%">
+                               </div>
+                           </div>
+                       </td>
+                    </tr>
+                    <tr ng-repeat="product in products">
+                        <td>{{product.code1}}</td>
+                        <td>{{product.code2}}</td>
+                        <td>{{product.description}}</td>
+                        <td>{{product.kind.name}}</td>
+                        <td>{{product.unit.name}}</td>
+                        <td><button class="btn btn-xs">Editar</button></td>
+                    </tr>
+            </tbody>
+        </table>
+        </div>
+    }
+}
