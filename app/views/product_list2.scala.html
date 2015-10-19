@@ -46,7 +46,10 @@
                         <td>{{product.description}}</td>
                         <td>{{product.kind.name}}</td>
                         <td>{{product.unit.name}}</td>
-                        <td><button class="btn btn-xs">Editar</button></td>
+                        <td>
+                            <button class="btn btn-xs">Editar</button>
+                            <button ng-show="product.kind.name != 'Materia Prima'" class="btn btn-xs">Estructura</button>
+                        </td>
                     </tr>
             </tbody>
         </table>

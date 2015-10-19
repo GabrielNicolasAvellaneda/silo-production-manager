@@ -1,12 +1,12 @@
 package models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Writes, OWrites, Json}
 
 /**
  * Created by developer on 04/10/2015.
  */
 
-case class Product( code1: String = "",
+case class Product ( code1: String = "",
                     code2: Option[String] = None,
                     description: String = "",
                     unit: Option[ProductUnit],
@@ -47,12 +47,22 @@ case class Product (code1:String = "",
 }
 */
 
+trait LowPriorityWriteInstances {
+  implicit val productKindWrites = Json.writes[ProductKind]
+  implicit val productUnitWrites = Json.writes[ProductUnit]
+  implicit val productWrites = Json.writes[Product]
 
-object Product {
+  implicit object persitedWrites extends OWrites[sorm.Persisted] {
+    def writes(persisted: sorm.Persisted) = Json.obj("id" -> persisted.id)
+  }
+}
 
-  implicit val productKindFormat = Json.format[ProductKind]
-  implicit val productUnitFormat = Json.format[ProductUnit]
-  implicit val productFormat = Json.format[Product]
+object Product extends LowPriorityWriteInstances {
+
+  implicit val productPersistedWrites = new Writes[Product with sorm.Persisted] {
+    def writes(o: Product with sorm.Persisted) =
+      productWrites.writes(o) ++ implicitly[OWrites[sorm.Persisted]].writes(o)
+  }
 
   def all = Db.query[Product]
 
@@ -60,6 +70,5 @@ object Product {
     val rawMaterialKind = Db.query[ProductKind].whereEqual("id", 1).fetchOne()
     Db.query[Product].whereEqual("kind", rawMaterialKind)
   }
-
 
 }
