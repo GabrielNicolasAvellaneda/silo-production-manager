@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import models.{ProductNew, Db, Product}
+import models.{ProductItem, ProductNew, Db, Product, ProductTree}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, MessagesApi, Messages, Lang}
@@ -11,6 +11,8 @@ import play.api.libs.json.{JsString, Json}
 import sorm.mappings.Mapping
 import play.api.data.format.Formats._
 import views._
+
+import scala.collection.JavaConverters._
 
 /**
  * Created by developer on 04/10/2015.
@@ -44,6 +46,26 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
 
     Ok(html.product_new(newProductForm))
   }
+
+
+  def generateTree(product:Product):ProductTree = {
+
+    val tree = ProductTree(product, Seq())
+    val productItems = Db.query[ProductItem].whereEqual("parent", product).fetch()
+    productItems foreach { x =>
+      tree.children = tree.children :+ generateTree(x.item)
+    }
+
+    tree
+  }
+
+   def productTreeApi(id: Int) = Action {
+
+     val product = Db.query[Product].whereEqual("id", id).fetchOne()
+     val tree = generateTree(product.get)
+
+     Ok(Json.toJson(tree))
+   }
 
   def listProductsApi(all: Boolean) = Action {
     if (all) {
