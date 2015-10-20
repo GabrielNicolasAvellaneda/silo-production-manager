@@ -31,9 +31,9 @@
             <td>{{product.kind.name}}</td>
             <td>{{product.unit.name}}</td>
             <td>
-                <a class="btn btn-default btn-xs" href="/products/view/{{product.id}}">Ver</a>
-                <a class="btn btn-default btn-xs" href="/products/edit/{{product.id}}">Estructura</a>
-                <a ng-show="product.kind.name != 'Materia Prima'" class="btn btn-default btn-xs" href="/products/tree/{{product.id}}">Estructura</a>
+                <a class="btn btn-default btn-xs" href="#/products/view/{{product.id}}">Ver</a>
+                <a class="btn btn-default btn-xs" href="#/products/edit/{{product.id}}">Editar</a>
+                <a ng-show="product.kind.name != 'Materia Prima'" class="btn btn-default btn-xs" href="#/products/tree/{{product.id}}">Estructura</a>
             </td>
         </tr>
         </tbody>
