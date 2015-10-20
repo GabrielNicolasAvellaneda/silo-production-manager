@@ -89,6 +89,11 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
     Ok(Json.toJson(productKinds))
   }
 
+  def listProductUnits() = Action {
+    val productUnits = Db.query[ProductUnit].fetch()
+    Ok(Json.toJson(productUnits))
+  }
+
   def createProduct = Action { implicit request =>
 
     newProductForm.bindFromRequest.fold(

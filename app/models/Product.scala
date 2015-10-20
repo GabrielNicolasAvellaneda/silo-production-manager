@@ -65,7 +65,6 @@ object Product extends LowPriorityWriteInstances {
       productWrites.writes(o) ++ implicitly[OWrites[sorm.Persisted]].writes(o)
   }
 
-
   def all = Db.query[Product]
 
   def rawMaterialsQuery = {

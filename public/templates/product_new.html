@@ -32,7 +32,7 @@
                     <label class="col-md-4 control-label" for="productKind">Tipo de Producto</label>
                     <div class="col-md-4">
                         <select ng-model="product.productKind" class="form-control" ng-options="kind.name for kind in productKinds track by kind.id" title="Tipo de Producto" required="">
-                            <option value>Seleccionar</option>
+                            <option value>--Seleccionar--</option>
                         </select>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                     <label class="col-md-4 control-label" for="productUnit">Unidad</label>
                     <div class="col-md-4">
                         <select ng-model="product.productUnit" class="form-control" ng-options="unit.name for unit in productUnits track by unit.id" title="Tipo de Unidad" required="">
-                            <option value>Seleccionar</option>
+                            <option value>--Seleccionar--</option>
                         </select>
                     </div>
                 </div>

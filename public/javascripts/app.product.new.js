@@ -7,10 +7,7 @@ angular.module('app')
         $scope.subtitle = "Nuevo";
         $scope.product = {};
         $scope.productKinds = [];
-        $scope.productUnits = [
-            {id: 1, name: "M2"},
-            {id: 2, name: "Unidad"}
-        ];
+        $scope.productUnits = [];
 
         $scope.save = function () {
             $log.info("Saving...");
@@ -22,5 +19,12 @@ angular.module('app')
             });
         };
 
+        $scope.getProductUnits = function () {
+            $http.get('/api/products/units').success(function (data) {
+               $scope.productUnits = $scope.productUnits.concat(data);
+            })
+        };
+
         $scope.getProductKinds();
+        $scope.getProductUnits();
     });
