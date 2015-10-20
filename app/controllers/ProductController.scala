@@ -7,9 +7,7 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, MessagesApi, Messages, Lang}
 import play.api.mvc.{Controller, Action}
-import play.api.libs.json.{JsString, Json}
-import sorm.mappings.Mapping
-import play.api.data.format.Formats._
+import play.api.libs.json._
 import views._
 
 import scala.collection.JavaConverters._
@@ -95,7 +93,8 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
       data => {
         val newProduct = Product(data.code1, Some(data.code2), data.description, None, None)
         val result = Db.save(newProduct)
-        Redirect(routes.ProductController.listProducts()).flashing("success" -> s"Product ${result.id} creado!")
+       // Redirect(routes.ProductController.listProducts()).flashing("success" -> s"Product ${result.id} creado!")
+        Ok("test")
       }
     )
 

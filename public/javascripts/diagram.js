@@ -72,8 +72,6 @@ function circular(container, jsonUrl, diameter) {
     var nodes = tree.nodes(root),
         links = tree.links(nodes);
 
-      console.log(nodes);
-
     var link = svg.selectAll(".link")
         .data(links)
       .enter().append("path")

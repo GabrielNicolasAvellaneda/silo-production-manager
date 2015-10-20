@@ -12,9 +12,11 @@
         <script src="@routes.Assets.versioned("javascripts/jquery-2.1.4.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("javascripts/angular.min.js")" type="text/javascript"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
         <script src="@routes.Assets.versioned("javascripts/d3.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("javascripts/diagram.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("javascripts/app.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("javascripts/app.product.list.js")"></script>
     </head>
     <body ng-app="app">
         <div id="wrapper">
@@ -31,13 +33,13 @@
                         <a href="#">Dashboard</a>
                     </li>
                     <li>
-                        <a href="@routes.ProductController.newProduct()">Nuevo Producto</a>
+                        <a href="/products/new">Nuevo Producto</a>
                     </li>
                     <li>
-                        <a href="@routes.ProductController.listProducts(all=true)">Listar Productos</a>
+                        <a href="/products">Listar Productos</a>
                     </li>
                     <li>
-                        <a href="@routes.ProductController.listProducts()">Listar Materiales</a>
+                        <a href="/products/raw-material">Listar Materiales</a>
                     </li>
                 </ul>
             </div>
@@ -46,11 +48,8 @@
                 <!-- Page Content -->
             <div id="page-content-wrapper">
                 <div class="container-fluid">
-
-                    <div class="row" ng-controller="DiagramCtrl">
-                        <div id="diagram" ></div>
-                    </div>
-                    <div class="row">
+                   <div ng-view></div>
+                   <div class="row">
                         <div class="col-lg-12">
                             @content
                             <hr/>

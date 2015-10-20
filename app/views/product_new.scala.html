@@ -4,7 +4,7 @@
 
     @content("Product.New") {
 
-       @helper.form(action = routes.ProductController.createProduct) {
+       helper.form(action = routes.ProductController.createProduct) {
            @helper.inputText(form("code1"))
            @helper.inputText(form("code2"))
            @helper.inputText(form("description"))

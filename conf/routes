@@ -3,18 +3,18 @@
 # ~~~~
 
 # Home page
-GET         /api/products        controllers.ProductController.listProductsApi(all: Boolean?=false)
+GET        /api/products                 controllers.ProductController.listProductsApi(all: Boolean?=false)
+GET        /api/products/tree/:id        controllers.ProductController.productTreeApi(id: Int)
 
-GET         /products            controllers.ProductController.listProducts(all: Boolean?=false)
+GET        /                             controllers.ApplicationController.index()
 
-GET         /api/products/tree/:id   controllers.ProductController.productTreeApi(id: Int)
+#POST        /products                     controllers.ProductController.search
 
-POST        /products            controllers.ProductController.search
+#GET         /products/new                 controllers.ProductController.newProduct
 
-GET         /products/new        controllers.ProductController.newProduct
-
-POST        /products/new        controllers.ProductController.createProduct
-
+#POST        /products/new                 controllers.ProductController.createProduct
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
+GET        /assets/*file                 controllers.Assets.versioned(path="/public", file: Asset)
+
+GET       /*path                         controllers.ApplicationController.catchAll(path:String)
