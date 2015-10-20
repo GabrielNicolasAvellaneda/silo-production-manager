@@ -10,11 +10,11 @@ angular.module('app', ['ngRoute'])
                     templateUrl: '/assets/templates/dashboard.html',
                     controller: 'DashboardController'
                 }).
-                when('/products/:filter', {
+                when('/products/list/:filter', {
                     templateUrl: '/assets/templates/product_list.html',
                     controller: 'ProductListController'
                 }).
-                when('/products/', {
+                when('/products/list', {
                     templateUrl: '/assets/templates/product_list.html',
                     controller: 'ProductListController'
                 }).

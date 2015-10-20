@@ -1,17 +1,13 @@
-<h3>Nuevo Producto</h3>
+<h2>{{title}} <small>{{subtitle}}</small></h2>
 <div class="panel panel-default">
     <!-- Default panel contents -->
     <div class="panel-heading">Producto</div>
     <div class="panel-body">
         <form class="form-horizontal" ng-submit="ctl.saveProduct()">
             <fieldset>
-
-                <!-- Form Name -->
-                <legend>Nuevo Producto</legend>
-
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="code1">CÃ³digo 1</label>
+                    <label class="col-md-4 control-label" for="code1">Código 1</label>
                     <div class="col-md-4">
                         <input ng-model="ctl.product.code1" id="code1" name="code1" type="text" placeholder="" class="form-control input-md" required="">
                     </div>
@@ -19,55 +15,55 @@
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="code2">CÃ³digo 2</label>
+                    <label class="col-md-4 control-label" for="code2">Código 2</label>
                     <div class="col-md-4">
                         <input ng-model="ctl.product.code2" id="code2" name="code2" type="text" placeholder="" class="form-control input-md">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="description">DescripciÃ³n</label>
+                    <label class="col-md-4 control-label" for="description">Descripción</label>
                     <div class="col-md-4">
                         <input nb-model="ctl.product.description" id="code2" name="description" type="text" placeholder="" class="form-control input-md" required="">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="productType">Tipo de Producto</label>
+                    <label class="col-md-4 control-label" for="productKind">Tipo de Producto</label>
                     <div class="col-md-4">
-                        <select ng-model="ctl.product.productType" class="form-control" ng-options="productType.name for productType in ctl.productTypes track by productType.value" title="Tipo de Producto" required="">
+                        <select ng-model="product.productKind" class="form-control" ng-options="kind.name for kind in productKinds track by kind.id" title="Tipo de Producto" required="">
                             <option value>Seleccionar</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="productType">Unidad</label>
+                    <label class="col-md-4 control-label" for="productUnit">Unidad</label>
                     <div class="col-md-4">
-                        <select ng-model="ctl.product.unitType" class="form-control" ng-options="unitType.name for unitType in ctl.unitTypes track by unitType.value" title="Tipo de Unidad" required="">
+                        <select ng-model="product.productUnit" class="form-control" ng-options="unit.name for unit in productUnits track by unit.id" title="Tipo de Unidad" required="">
                             <option value>Seleccionar</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="description">Horas Hombre EspecÃ­fico</label>
+                    <label class="col-md-4 control-label" for="">Horas Hombre Específicas</label>
                     <div class="col-md-4">
-                        <input nb-model="ctl.product.specificWorkmanHours" id="code2" name="specificWorkmanHours" type="text" placeholder="" class="form-control input-md" required="">
+                        <input ng-disabled="product.productKind.id == 1" ng-model="product.specificWorkmanHours" id="code2" name="specificWorkmanHours" type="text" placeholder="" class="form-control input-md" required="">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="description">Costo EspecÃ­fico</label>
+                    <label class="col-md-4 control-label" for="">Costo Específico</label>
                     <div class="col-md-4">
-                        <input nb-model="ctl.product.specificCost" id="code2" name="specificCost" type="text" placeholder="" class="form-control input-md" required="">
+                        <input nb-model="product.specificCost" id="code2" name="specificCost" type="text" placeholder="" class="form-control input-md" required="">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="singlebutton"></label>
                     <div class="col-md-4">
-                        <input type="submit" id="singlebutton" name="singlebutton" class="btn btn-primary" value="Guardar" />
+                        <button ng-click="save" id="singlebutton" name="singlebutton" class="btn btn-info" value="Guardar">Guardar</button>
                     </div>
                 </div>
 
