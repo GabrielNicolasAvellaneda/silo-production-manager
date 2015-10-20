@@ -22,4 +22,20 @@ angular.module('app')
                 $scope.loading = false;
             }
         );
-});
+})
+    .controller('ProductViewController', function ($scope, $http, $log, $location, $routeParams) {
+        $scope.title = 'Producto';
+        $scope.subtitle = 'Detalle';
+        $scope.product = {};
+
+        $scope.load = function () {
+           var id = $routeParams.id;
+           $http.get('/api/products/get/' + id).then(function (response) {
+               $scope.product = response.data;
+           }, function (response) {
+
+           });
+        };
+
+        $scope.load()
+    });

@@ -22,6 +22,10 @@ angular.module('app', ['ngRoute'])
                     templateUrl: '/assets/templates/product_tree.html',
                     controller: 'ProductTreeController'
                 }).
+                when('/products/view/:id', {
+                    templateUrl: '/assets/templates/product_view.html',
+                    controller: 'ProductViewController'
+                }).
                 when('/products/new', {
                     templateUrl: '/assets/templates/product_new.html',
                     controller: 'ProductNewController'

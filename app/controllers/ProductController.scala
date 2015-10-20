@@ -27,11 +27,14 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
     Ok(html.product_list(searchProductForm, products))
   }
 
-   def productTree(id: Int) = Action {
+  def getProduct(id: Int) = Action {
+    val product = Product.getById(id)
+    Ok(Json.toJson(product))
+  }
 
+   def productTree(id: Int) = Action {
      val product = Product.getById(id)
      val tree = Product.getTree(product.get)
-
      Ok(Json.toJson(tree))
    }
 
@@ -70,7 +73,6 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
         Ok(Json.toJson(result))
       }
     )
-
   }
 
 }

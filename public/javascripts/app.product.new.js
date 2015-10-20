@@ -2,7 +2,7 @@
  * Created by developer on 20/10/2015.
  */
 angular.module('app')
-    .controller('ProductNewController', function ($scope, $http, $log) {
+    .controller('ProductNewController', function ($scope, $http, $location, $log) {
         $scope.title = "Producto";
         $scope.subtitle = "Nuevo";
         $scope.product = {
@@ -11,7 +11,6 @@ angular.module('app')
         };
         $scope.productKinds = [];
         $scope.productUnits = [];
-
 
         $scope.getProductKinds = function () {
             $http.get('/api/products/kinds').success(function (res) {
@@ -27,9 +26,10 @@ angular.module('app')
 
         $scope.save = function () {
             $log.info($scope.product);
-            $http.post('/api/products/new', $scope.product).success(function (data, status) {
-                console.log("Saved!");
-                $log.info("Yes, was saved!");
+            $http.post('/api/products/new', $scope.product).then(function (response) {
+                $location.path('/products/view/' + response.data.id);
+            }, function (response) {
+                console.log(response);
             })
         };
 
