@@ -16,4 +16,6 @@ object ProductKind extends LowPriorityWriteInstances {
       productKindWrites.writes(o) ++ implicitly[OWrites[sorm.Persisted]].writes(o)
   }
 
+  def getById(id: Int) = Db.query[ProductKind].whereEqual("id", id).fetchOne()
+
 }

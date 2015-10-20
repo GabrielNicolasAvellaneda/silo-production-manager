@@ -5,13 +5,13 @@ angular.module('app')
     .controller('ProductNewController', function ($scope, $http, $log) {
         $scope.title = "Producto";
         $scope.subtitle = "Nuevo";
-        $scope.product = {};
+        $scope.product = {
+            specificCost: 0,
+            specificWorkmanHours: 0
+        };
         $scope.productKinds = [];
         $scope.productUnits = [];
 
-        $scope.save = function () {
-            $log.info("Saving...");
-        };
 
         $scope.getProductKinds = function () {
             $http.get('/api/products/kinds').success(function (res) {
@@ -25,6 +25,15 @@ angular.module('app')
             })
         };
 
+        $scope.save = function () {
+            $log.info($scope.product);
+            $http.post('/api/products/new', $scope.product).success(function (data, status) {
+                console.log("Saved!");
+                $log.info("Yes, was saved!");
+            })
+        };
+
         $scope.getProductKinds();
         $scope.getProductUnits();
+
     });

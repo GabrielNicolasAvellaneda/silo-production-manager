@@ -59,6 +59,7 @@ trait LowPriorityWriteInstances {
 }
 
 object Product extends LowPriorityWriteInstances {
+  def save(product: Product) = Db.save[Product](product)
 
   implicit val productPersistedWrites = new Writes[Product with sorm.Persisted] {
     def writes(o: Product with sorm.Persisted) =
@@ -67,9 +68,23 @@ object Product extends LowPriorityWriteInstances {
 
   def all = Db.query[Product]
 
+  def getById(id: Int) = Db.query[Product].whereEqual("id", id).fetchOne()
+
   def rawMaterialsQuery = {
     val rawMaterialKind = Db.query[ProductKind].whereEqual("id", 1).fetchOne()
     Db.query[Product].whereEqual("kind", rawMaterialKind)
   }
+
+  def getTree(product:Product):ProductTree = {
+
+    val tree = ProductTree(product, Seq())
+    val productItems = Db.query[ProductItem].whereEqual("parent", product).fetch()
+    productItems foreach { x =>
+      tree.children = tree.children :+ getTree(x.item)
+    }
+
+    tree
+  }
+
 
 }

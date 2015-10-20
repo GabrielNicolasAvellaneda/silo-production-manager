@@ -6,7 +6,7 @@ import models._
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, MessagesApi, Messages, Lang}
-import play.api.mvc.{Controller, Action}
+import play.api.mvc.{BodyParsers, Controller, Action}
 import play.api.libs.json._
 import views._
 
@@ -17,22 +17,9 @@ import scala.collection.JavaConverters._
  */
 class ProductController @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport  {
 
-  val newProductForm = Form[ProductNew] (
-    mapping(
-      "code1" -> nonEmptyText,
-      "code2" -> text,
-      "description" -> nonEmptyText
-    )(ProductNew.apply)(ProductNew.unapply)
-  )
-
   val searchProductForm = Form(
     single("query" -> text)
   )
-
-  def index = Action { implicit request =>
-    val products = Db.query[Product].fetch()
-    Ok(html.product_list(searchProductForm, products))
-  }
 
   def search = Action { implicit request =>
     val query = searchProductForm.bindFromRequest().get
@@ -40,32 +27,15 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
     Ok(html.product_list(searchProductForm, products))
   }
 
-  def newProduct = Action {
+   def productTree(id: Int) = Action {
 
-    Ok(html.product_new(newProductForm))
-  }
-
-
-  def generateTree(product:Product):ProductTree = {
-
-    val tree = ProductTree(product, Seq())
-    val productItems = Db.query[ProductItem].whereEqual("parent", product).fetch()
-    productItems foreach { x =>
-      tree.children = tree.children :+ generateTree(x.item)
-    }
-
-    tree
-  }
-
-   def productTreeApi(id: Int) = Action {
-
-     val product = Db.query[Product].whereEqual("id", id).fetchOne()
-     val tree = generateTree(product.get)
+     val product = Product.getById(id)
+     val tree = Product.getTree(product.get)
 
      Ok(Json.toJson(tree))
    }
 
-  def listProductsApi(all: Boolean) = Action {
+  def listProducts(all: Boolean) = Action {
     if (all) {
       val products = Product.all.fetch()
       Ok(Json.toJson(products take 10))
@@ -74,14 +44,6 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
       val json = Json.toJson(rawMaterials take 10)
       Ok(json)
     }
-  }
-
-  def listProducts(all: Boolean) = Action { implicit request =>
-        if (all) {
-          Ok(html.product_list2("Producto", "Listado", all))
-        } else {
-          Ok(html.product_list2("Materia Prima", "Listado", all))
-        }
   }
 
   def listProductKinds() = Action {
@@ -94,17 +56,18 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
     Ok(Json.toJson(productUnits))
   }
 
-  def createProduct = Action { implicit request =>
-
-    newProductForm.bindFromRequest.fold(
-      formWithErrors => {
-        BadRequest(html.product_new(formWithErrors))
+  def newProduct() = Action(BodyParsers.parse.json) { request =>
+    val productNewResult = request.body.validate[NewProductForm]
+    productNewResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" -> "KO", "message" -> JsError.toFlatJson(errors)))
       },
-      data => {
-        val newProduct = Product(data.code1, Some(data.code2), data.description, None, None)
-        val result = Db.save(newProduct)
-       // Redirect(routes.ProductController.listProducts()).flashing("success" -> s"Product ${result.id} creado!")
-        Ok("test")
+      form => {
+        val unit = ProductUnit.getById(form.unit)
+        val kind = ProductKind.getById(form.kind)
+        val product = Product(form.code1, Some(form.code2), form.description, unit, kind)
+        val result = Product.save(product)
+        Ok(Json.toJson(result))
       }
     )
 
