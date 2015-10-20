@@ -10,7 +10,7 @@ angular.module('app', ['ngRoute'])
                     templateUrl: '/assets/templates/dashboard.html',
                     controller: 'DashboardController'
                 }).
-                when('/products/raw-material', {
+                when('/products/:filter', {
                     templateUrl: '/assets/templates/product_list.html',
                     controller: 'ProductListController'
                 }).

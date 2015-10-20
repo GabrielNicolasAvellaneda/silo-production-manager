@@ -2,10 +2,10 @@
  * Created by developer on 18/10/2015.
  */
 angular.module('app')
-    .controller('ProductListController', function ($scope, $http, $log, $location) {
+    .controller('ProductListController', function ($scope, $http, $log, $location, $routeParams) {
 
         var isRawMaterialListing = function () {
-            return ($location.path().indexOf('raw-material') !== -1);
+            return $routeParams.filter;
         };
 
         $scope.title = isRawMaterialListing()? 'Materiales' : 'Producto';

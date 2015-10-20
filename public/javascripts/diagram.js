@@ -47,7 +47,7 @@ function cartesian(container, jsonUrl) {
 }
 
 function circular(container, jsonUrl, diameter) {
-  diameter = diameter || 2000 || 960;
+  diameter = diameter || 4000 || 960;
 
   var tree = d3.layout.tree()
       .size([360, diameter / 2 - 120])
