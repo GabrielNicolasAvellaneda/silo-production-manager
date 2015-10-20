@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import models.{ProductItem, ProductNew, Db, Product, ProductTree}
+import models._
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, MessagesApi, Messages, Lang}
@@ -82,6 +82,11 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
         } else {
           Ok(html.product_list2("Materia Prima", "Listado", all))
         }
+  }
+
+  def listProductKinds() = Action {
+    val productKinds = Db.query[ProductKind].fetch()
+    Ok(Json.toJson(productKinds))
   }
 
   def createProduct = Action { implicit request =>

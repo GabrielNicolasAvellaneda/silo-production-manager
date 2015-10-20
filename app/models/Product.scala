@@ -55,6 +55,7 @@ trait LowPriorityWriteInstances {
   implicit object persitedWrites extends OWrites[sorm.Persisted] {
     def writes(persisted: sorm.Persisted) = Json.obj("id" -> persisted.id)
   }
+
 }
 
 object Product extends LowPriorityWriteInstances {
@@ -63,6 +64,7 @@ object Product extends LowPriorityWriteInstances {
     def writes(o: Product with sorm.Persisted) =
       productWrites.writes(o) ++ implicitly[OWrites[sorm.Persisted]].writes(o)
   }
+
 
   def all = Db.query[Product]
 
