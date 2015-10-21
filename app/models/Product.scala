@@ -11,9 +11,10 @@ case class Product ( code1: String = "",
                     code2: Option[String] = None,
                     description: String = "",
                     unit: Option[ProductUnit],
-                    kind: Option[ProductKind]
+                    kind: Option[ProductKind],
+                    specificCost: Double = 0,
+                    specificWorkmanHours: Double = 0
                     )
-
 
 /*
 case class Product (code1:String = "",
@@ -96,7 +97,6 @@ object Product extends LowPriorityWriteInstances {
     productItems foreach { x =>
       tree.children = tree.children :+ getTree(x.item)
     }
-
     tree
   }
 
