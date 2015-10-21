@@ -3,7 +3,7 @@
     <div class="panel-heading panel-default">Productos</div>
     <p>&nbsp;</p>
     <div class="input-group col-lg-5 pull-right">
-        <input type="text" class="form-control" placeholder="Buscar..." ng-model="query.text">
+        <input type="text" class="form-control" placeholder="Buscar..." ng-model="query.text" on-enter-key="search()">
 				      <span class="input-group-btn">
 				        <button ng-click="search()" class="btn btn-default" type="button">Ok!</button>
 				      </span>
