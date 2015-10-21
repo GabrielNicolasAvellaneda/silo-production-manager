@@ -49,6 +49,19 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
     }
   }
 
+  def productSearch() = Action(BodyParsers.parse.json) { request =>
+    val query = request.body.validate[SearchProductForm]
+    query.fold (
+      errors => {
+        BadRequest(Json.obj("status" -> "KO", "message" -> JsError.toFlatJson(errors)))
+      },
+      form => {
+        val result = Product.search(form.text)
+        Ok(Json.toJson(result))
+      }
+    )
+ }
+
   def listProductKinds() = Action {
     val productKinds = Db.query[ProductKind].fetch()
     Ok(Json.toJson(productKinds))

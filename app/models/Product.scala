@@ -1,6 +1,7 @@
 package models
 
 import play.api.libs.json.{Writes, OWrites, Json}
+import sorm.Dsl._
 
 /**
  * Created by developer on 04/10/2015.
@@ -59,6 +60,9 @@ trait LowPriorityWriteInstances {
 }
 
 object Product extends LowPriorityWriteInstances {
+
+  val queryResultLimit = 40
+
   def save(product: Product) = Db.save[Product](product)
 
   implicit val productPersistedWrites = new Writes[Product with sorm.Persisted] {
@@ -70,9 +74,19 @@ object Product extends LowPriorityWriteInstances {
 
   def getById(id: Int) = Db.query[Product].whereEqual("id", id).fetchOne()
 
+  // TODO: Accept a map with field, value, operator.
+  def search (text: Option[String], kind: Option[Int] = None) = {
+
+    Db.query[Product]
+      .where("code1" like text.get)
+      .order("code1")
+      .limit(queryResultLimit)
+      .fetch()
+  }
+
   def rawMaterialsQuery = {
     val rawMaterialKind = Db.query[ProductKind].whereEqual("id", 1).fetchOne()
-    Db.query[Product].whereEqual("kind", rawMaterialKind)
+    Db.query[Product].whereEqual("kind", rawMaterialKind).limit(queryResultLimit)
   }
 
   def getTree(product:Product):ProductTree = {

@@ -22,6 +22,20 @@ angular.module('app')
                 $scope.loading = false;
             }
         );
+
+        $scope.hasResults = function () {
+           return $scope.products && $scope.products.length > 0
+        };
+
+        $scope.query = {};
+        $scope.lastestQuery = {};
+        $scope.search = function () {
+            $scope.latestQuery = $scope.query;
+            $http.post('/api/products/search', $scope.query).then(function (response) {
+              $scope.products = response.data;
+            });
+        }
+
 })
     .controller('ProductViewController', function ($scope, $http, $log, $location, $routeParams) {
         $scope.title = 'Producto';

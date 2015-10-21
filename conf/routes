@@ -5,6 +5,7 @@
 # Home page
 GET         /api/products                 controllers.ProductController.listProducts(all: Boolean?=false)
 GET         /api/products/tree/:id        controllers.ProductController.productTree(id: Int)
+POST        /api/products/search          controllers.ProductController.productSearch()
 GET         /api/products/kinds           controllers.ProductController.listProductKinds()
 GET         /api/products/units           controllers.ProductController.listProductUnits()
 POST        /api/products/new             controllers.ProductController.newProduct()
