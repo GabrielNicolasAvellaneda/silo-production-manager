@@ -62,9 +62,19 @@ object Product extends LowPriorityWriteInstances {
 
   def save(product: Product) = Db.save[Product](product)
 
+  def update(product: Product) = {
+    var updated: Product with sorm.Persisted = null
+    Db.transaction {
+      updated = Db.save[Product](product)
+      updateProductCost(product)
+    }
+    updateCostsForItem(product)
+    updated
+  }
+
   implicit val productPersistedWrites = new Writes[Product with sorm.Persisted] {
     def writes(o: Product with sorm.Persisted) =
-      productWrites.writes(o) ++ implicitly[OWrites[sorm.Persisted]].writes(o)
+      productWrites.writes(o) ++ implicitly[OWrites[sorm.Persisted]].writes(o) ++ Json.obj("price" -> o.price)
   }
 
   def all = Db.query[Product]

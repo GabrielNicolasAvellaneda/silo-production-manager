@@ -9,6 +9,7 @@ POST        /api/products/search          controllers.ProductController.productS
 GET         /api/products/kinds           controllers.ProductController.listProductKinds()
 GET         /api/products/units           controllers.ProductController.listProductUnits()
 POST        /api/products/new             controllers.ProductController.newProduct()
+POST        /api/products/update          controllers.ProductController.updateProduct()
 GET         /api/products/get/:id         controllers.ProductController.getProduct(id: Int)
 GET         /                             controllers.ApplicationController.index()
 

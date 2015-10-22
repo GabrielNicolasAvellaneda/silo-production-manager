@@ -36,4 +36,37 @@ angular.module('app')
         $scope.getProductKinds();
         $scope.getProductUnits();
 
+    })
+    .controller('ProductEditController', function ($scope, $http, $location, $log, $routeParams) {
+        $scope.title = 'Producto';
+        $scope.subtitle = "Editar";
+        $scope.product = {};
+
+        $scope.load = function (id) {
+
+           $http.get('/api/products/get/' + id).then(function (response) {
+              $scope.product = response.data
+           })
+        };
+
+        $scope.productKinds = [];
+        $scope.productUnits = [];
+
+        $scope.getProductKinds = function () {
+            $http.get('/api/products/kinds').success(function (res) {
+                $scope.productKinds = $scope.productKinds.concat(res);
+            });
+        };
+
+        $scope.getProductUnits = function () {
+            $http.get('/api/products/units').success(function (data) {
+                $scope.productUnits = $scope.productUnits.concat(data);
+            })
+        };
+
+        $scope.getProductKinds();
+        $scope.getProductUnits();
+        $scope.load($routeParams.id);
     });
+
+

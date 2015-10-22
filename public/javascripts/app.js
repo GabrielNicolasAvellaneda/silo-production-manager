@@ -43,7 +43,7 @@ angular.module('app', ['ngRoute'])
                     templateUrl: '/assets/templates/product_new.html',
                     controller: 'ProductNewController'
                 }).
-                when('/products/edit', {
+                when('/products/edit/:id', {
                     templateUrl: '/assets/templates/product_edit.html',
                     controller: 'ProductEditController'
                 }).

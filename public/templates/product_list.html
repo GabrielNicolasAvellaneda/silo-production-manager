@@ -1,9 +1,9 @@
 <h2>{{title}} <small>{{subtitle}}</small></h2>
 <div class="panel panel-default">
     <div class="panel-heading panel-default">Productos</div>
-    <p>&nbsp;</p>
+    <div class="panel-body">
     <div class="input-group col-lg-5 pull-right">
-        <input type="text" class="form-control" placeholder="Buscar..." ng-model="query.text" on-enter-key="search()">
+        <input type="search" class="form-control" placeholder="Buscar..." ng-model="query.text" on-enter-key="search()">
 				      <span class="input-group-btn">
 				        <button ng-click="search()" class="btn btn-default" type="button">Ok!</button>
 				      </span>
@@ -19,13 +19,14 @@
             <th>Descripción</th>
             <th>Tipo</th>
             <th>Unidad</th>
+            <th>Costo</th>
             <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
 
         <tr ng-show="loading">
-            <td colspan="7">
+            <td colspan="8">
                 <p>Cargando...</p>
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%">
@@ -35,7 +36,7 @@
         </tr>
 
         <tr ng-hide="hasResults()">
-           <td colspan="7">
+           <td colspan="8">
                <p>No hay resultados</p>
            </td>
         </tr>
@@ -47,6 +48,7 @@
             <td>{{product.description}}</td>
             <td>{{product.kind.name}}</td>
             <td>{{product.unit.name}}</td>
+            <td>{{product.calculatedCost | number : 4}}</td>
             <td>
                 <a class="btn btn-default btn-xs" href="#/products/view/{{product.id}}">Ver</a>
                 <a class="btn btn-default btn-xs" href="#/products/edit/{{product.id}}">Editar</a>
@@ -55,4 +57,5 @@
         </tr>
         </tbody>
     </table>
+    </div>
 </div>

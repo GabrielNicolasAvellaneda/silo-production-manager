@@ -81,9 +81,27 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
       form => {
         val unit = ProductUnit.getById(form.unit)
         val kind = ProductKind.getById(form.kind)
-        val product = Product(form.code1, Some(form.code2), form.description, unit, kind)
+        val product = Product(form.code1, form.code2, form.description, unit, kind)
         val result = Product.save(product)
         Ok(Json.toJson(result))
+      }
+    )
+  }
+
+  def updateProduct() = Action(BodyParsers.parse.json) { request =>
+    val productUpdateResult = request.body.validate[UpdateProductForm]
+    productUpdateResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" -> "KO", "message" -> JsError.toFlatJson(errors)))
+      },
+      form => {
+        val id = form.id
+        val unit = ProductUnit.getById(form.unit)
+        val kind = ProductKind.getById(form.kind)
+        val product = Product.getById(id).get
+        val updateProduct = product.copy()
+        val updated = Product.update(updateProduct)
+        Ok(Json.toJson(updated))
       }
     )
   }

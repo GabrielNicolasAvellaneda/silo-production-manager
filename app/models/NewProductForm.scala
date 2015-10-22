@@ -7,7 +7,7 @@ import play.api.libs.json._
  */
 case class NewProductForm (
                     code1: String,
-                    code2: String,
+                    code2: Option[String],
                     description: String,
                     unit: Int,
                     kind: Int,
