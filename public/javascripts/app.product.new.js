@@ -37,10 +37,11 @@ angular.module('app')
         $scope.getProductUnits();
 
     })
-    .controller('ProductEditController', function ($scope, $http, $location, $log, $routeParams) {
+    .controller('ProductEditController', function ($scope, $http, $location, $log, $routeParams, $uibModal) {
         $scope.title = 'Producto';
         $scope.subtitle = "Editar";
         $scope.product = {};
+        $scope.items = {};
 
         $scope.load = function (id) {
 
@@ -67,6 +68,106 @@ angular.module('app')
         $scope.getProductKinds();
         $scope.getProductUnits();
         $scope.load($routeParams.id);
+
+        $scope.selectProduct = false;
+        $scope.items = [];
+
+        $scope.removeItem = function(item) {
+            var index = $scope.items.indexOf(item);
+            $scope.items.splice(index, 1);
+        };
+
+        $scope.itemExists = function(searchItem) {
+            for (var i=0; i < $scope.items.length; i++) {
+                var item = $scope.items[i];
+                if (item.product == searchItem.product) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        $scope.editItem = function (item) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'editItemModal.html',
+                controller: 'EditItemController',
+                resolve: {
+                    item: function () {
+                        return item;
+                    }
+                }
+            });
+        };
+
+        $scope.addItemAndEdit = function (item) {
+            if ($scope.addItem(item)) {
+                $scope.editItem(item);
+            }
+        };
+
+        $scope.addItem = function(item) {
+            if (!$scope.itemExists(item)) {
+                $scope.items.push(item);
+                return true;
+            }
+            return false;
+        };
+
+        $scope.showAddItemModal = function () {
+            var modalInstance = $uibModal.open({
+                size: 'lg',
+                animation: true,
+                templateUrl: 'selectProductModal.html',
+                controller: 'SelectProductController'
+            });
+            modalInstance.result.then(function (selectedItem) {
+                $scope.selected = selectedItem;
+                $scope.addItemAndEdit(selectedItem);
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+            $scope.selectProduct = false;
+        }
+    })
+    .controller('SelectProductController', function ($scope, $http, $modalInstance) {
+        $scope.items = [];
+        $scope.firstTime = true;
+
+        $scope.query = { text: ''};
+
+        $scope.selected = {};
+
+        $scope.ok = function() {
+            if ($scope.selected.item) {
+                $modalInstance.close({quantity: 1, product: $scope.selected.item});
+            }
+        };
+        $scope.cancel = function() {
+            $modalInstance.dismiss('cancel');
+        };
+
+        $scope.hasResults = function () {
+            return $scope.items && $scope.items.length > 0;
+        };
+
+        $scope.search = function () {
+            $scope.firstTime = false;
+            $http.post('/api/products/search', $scope.query).then(function (response) {
+                var data = response.data.slice(0, 10);
+                $scope.items = data;
+            });
+        };
+
+    })
+    .controller('EditItemController', function ($scope, $modalInstance, item) {
+        $scope.item = item;
+        $scope.ok = function() {
+            $modalInstance.close();
+        };
+        $scope.cancel = function() {
+            $modalInstance.dismiss('cancel');
+        };
+
+
     });
-
-

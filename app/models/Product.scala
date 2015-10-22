@@ -62,10 +62,12 @@ object Product extends LowPriorityWriteInstances {
 
   def save(product: Product) = Db.save[Product](product)
 
-  def update(product: Product) = {
+  def update(product: Product, items: Seq[ProductItem]) = {
     var updated: Product with sorm.Persisted = null
     Db.transaction {
       updated = Db.save[Product](product)
+      // TODO: Save productItems
+
       updateProductCost(product)
     }
     updateCostsForItem(product)

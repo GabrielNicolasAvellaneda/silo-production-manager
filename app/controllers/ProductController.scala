@@ -21,12 +21,6 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
     single("query" -> text)
   )
 
-  def search = Action { implicit request =>
-    val query = searchProductForm.bindFromRequest().get
-    val products = Db.query[Product].whereLike("description", s"%$query%").fetch()
-    Ok(html.product_list(searchProductForm, products))
-  }
-
   def getProduct(id: Int) = Action {
     val product = Product.getById(id)
     Ok(Json.toJson(product))
@@ -100,7 +94,8 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
         val kind = ProductKind.getById(form.kind)
         val product = Product.getById(id).get
         val updateProduct = product.copy()
-        val updated = Product.update(updateProduct)
+        val items: Seq[ProductItem] = null
+        val updated = Product.update(updateProduct, items)
         Ok(Json.toJson(updated))
       }
     )
