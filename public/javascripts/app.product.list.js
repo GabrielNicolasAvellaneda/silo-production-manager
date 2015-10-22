@@ -41,6 +41,7 @@ angular.module('app')
         $scope.title = 'Producto';
         $scope.subtitle = 'Detalle';
         $scope.product = {};
+        $scope.items = [];
 
         $scope.load = function () {
            var id = $routeParams.id;
@@ -49,6 +50,10 @@ angular.module('app')
            }, function (response) {
 
            });
+
+            $http.get('/api/products/get-items/' + id).then(function (response) {
+              $scope.items = response.data;
+            });
         };
 
         $scope.load()

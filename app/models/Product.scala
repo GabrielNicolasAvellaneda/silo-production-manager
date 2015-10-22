@@ -56,7 +56,14 @@ trait LowPriorityWriteInstances {
 
 }
 
-object Product extends LowPriorityWriteInstances {
+trait ProductWriteInstances extends LowPriorityWriteInstances {
+  implicit val productPersistedWrites = new Writes[Product with sorm.Persisted] {
+    def writes(o: Product with sorm.Persisted) =
+      productWrites.writes(o) ++ implicitly[OWrites[sorm.Persisted]].writes(o) ++ Json.obj("price" -> o.price)
+  }
+}
+
+object Product extends ProductWriteInstances {
 
   val queryResultLimit = 40
 
@@ -74,10 +81,6 @@ object Product extends LowPriorityWriteInstances {
     updated
   }
 
-  implicit val productPersistedWrites = new Writes[Product with sorm.Persisted] {
-    def writes(o: Product with sorm.Persisted) =
-      productWrites.writes(o) ++ implicitly[OWrites[sorm.Persisted]].writes(o) ++ Json.obj("price" -> o.price)
-  }
 
   def all = Db.query[Product]
 

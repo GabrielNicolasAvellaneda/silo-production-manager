@@ -11,6 +11,7 @@ GET         /api/products/units           controllers.ProductController.listProd
 POST        /api/products/new             controllers.ProductController.newProduct()
 POST        /api/products/update          controllers.ProductController.updateProduct()
 GET         /api/products/get/:id         controllers.ProductController.getProduct(id: Int)
+GET         /api/products/get-items/:parentId controllers.ProductController.getProductItems(parentId: Int)
 GET         /                             controllers.ApplicationController.index()
 
 #POST        /products                     controllers.ProductController.search

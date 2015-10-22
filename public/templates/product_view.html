@@ -75,7 +75,25 @@
                     </div>
                 </div>
 
-            <div class="form-group">
+            <div class="row">
+                <label class="col-md-4 control-label" for="description">Items</label>
+                <div class="col-md-8">
+                    <table class="table col-md-8">
+                        <thead>
+                        <tr><th>Cantidad</th><th>Producto</th><th>Costo Unit.</th></tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in items">
+                            <td>{{item.quantity}}</td><td>{{item.item.code1}} {{item.item.description}}</td><td>{{item.item.calculatedCost}}</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <hr />
+
+                <div class="form-group">
                     <label class="col-md-4 control-label" for="singlebutton"></label>
                     <div class="col-md-4">
                         <a href="#/products/edit/{{product.id}}" class="btn btn-primary">Editar</a>

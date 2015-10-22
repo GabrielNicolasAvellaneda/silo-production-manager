@@ -26,6 +26,11 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
     Ok(Json.toJson(product))
   }
 
+  def getProductItems(id: Int) = Action {
+   val items = ProductItem.getItemsByParentId(id)
+    Ok(Json.toJson(items))
+  }
+
    def productTree(id: Int) = Action {
      val product = Product.getById(id)
      val tree = Product.getTree(product.get)

@@ -8,14 +8,16 @@ import play.api.libs.json.Json
 case class ProductItem (
   parent: Product,
   quantity: Double,
-  item: Product )
+  item: Product ) // TODO: Change to product
 {
 
   def calculatedCost = quantity * item.calculatedCost
 
 }
 
-object ProductItem {
+object ProductItem extends ProductWriteInstances {
+
+  implicit val productItemFormat = Json.writes[ProductItem]
 
   def getItemsByParentId(parentId: Long) = {
     Db.query[ProductItem].whereEqual("parent.id", parentId).fetch()
