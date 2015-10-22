@@ -11,10 +11,21 @@ case class ProductItem (
   item: Product )
 {
 
+  def calculatedCost = quantity * item.calculatedCost
+
 }
 
 object ProductItem {
 
-//  implicit val productItemFormat = Json.format[ProductItem]
+  def getItemsByParentId(parentId: Long) = {
+    Db.query[ProductItem].whereEqual("parent.id", parentId).fetch()
+  }
 
+  def getItemsByParent(parent:Product) = {
+    Db.query[ProductItem].whereEqual("parent", parent).fetch()
+  }
+
+  def getParentsForItem(item:Product) = {
+    Db.query[ProductItem].whereEqual("item", item).fetch().map(x => x.parent)
+  }
 }

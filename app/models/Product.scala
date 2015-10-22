@@ -13,8 +13,16 @@ case class Product ( code1: String = "",
                     unit: Option[ProductUnit],
                     kind: Option[ProductKind],
                     specificCost: Double = 0,
-                    specificWorkmanHours: Double = 0
+                    specificWorkmanHours: Double = 0,
+                    calculatedCost:Double = 0
                     )
+{
+  def price = calculatedCost * 1.41
+
+  def specificWorkmanHoursCost = specificWorkmanHours * 15
+
+  def specificTotalCost = specificCost + specificWorkmanHoursCost
+}
 
 /*
 case class Product (code1:String = "",
@@ -35,18 +43,6 @@ case class Product (code1:String = "",
                     )
 {
 
-  def totalCost:Double = {
-    totalMaterialCost + totalWorkmanHoursCost
-  }
-
-  def price:Double = {
-    totalCost * 1.41
-  }
-
-  def priceWithTaxes:Double = {
-    price * taxesFactor
-  }
-}
 */
 
 trait LowPriorityWriteInstances {
@@ -93,12 +89,35 @@ object Product extends LowPriorityWriteInstances {
   def getTree(product:Product):ProductTree = {
 
     val tree = ProductTree(product, Seq())
-    val productItems = Db.query[ProductItem].whereEqual("parent", product).fetch()
+    val productItems = ProductItem.getItemsByParent(product)
     productItems foreach { x =>
       tree.children = tree.children :+ getTree(x.item)
     }
     tree
   }
 
+  def calculateItemsCostForProduct(parent:Product) = {
+    val items = ProductItem.getItemsByParent(parent)
+    items.foldLeft(0.0)((a, b) => a + b.item.calculatedCost * b.quantity)
+  }
+
+  def calculateProductCost(product:Product): Double = {
+    calculateItemsCostForProduct(product) + product.specificTotalCost
+ }
+
+  def updateProductCost(product:Product) = {
+    val calculatedCost = calculateProductCost(product)
+    val updateProduct = product.copy(calculatedCost = calculatedCost)
+    Db.save[Product](updateProduct)
+  }
+
+  def updateCostsForItem(item:Product):Unit = {
+    val parents = ProductItem.getParentsForItem(item)
+    parents foreach {
+      x =>
+        val updatedProduct = updateProductCost(x)
+        updateCostsForItem(updatedProduct)
+    }
+  }
 
 }

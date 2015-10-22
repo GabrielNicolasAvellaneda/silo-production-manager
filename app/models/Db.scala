@@ -10,6 +10,7 @@ object Db extends Instance(
   url = "jdbc:mysql://localhost:3306/silofabric",
   user = "developer",
   initMode = InitMode.DoNothing
+  //initMode = InitMode.DropAllCreate
 ) {
 
 
