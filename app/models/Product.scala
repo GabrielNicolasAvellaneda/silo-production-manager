@@ -77,7 +77,6 @@ object Product extends ProductWriteInstances {
 
       updateProductCost(product)
     }
-    updateCostsForItem(product)
     updated
   }
 

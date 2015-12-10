@@ -1,6 +1,6 @@
 package models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{OWrites, Writes, Json}
 
 /**
  * Created by developer on 18/10/2015.
@@ -10,14 +10,19 @@ case class ProductItem (
   quantity: Double,
   item: Product ) // TODO: Change to product
 {
-
   def calculatedCost = quantity * item.calculatedCost
-
 }
 
-object ProductItem extends ProductWriteInstances {
+trait LowPriorityProductItemWriteInstances extends ProductWriteInstances {
+  implicit val productItemWrites = Json.writes[ProductItem]
+}
 
-  implicit val productItemFormat = Json.writes[ProductItem]
+object ProductItem extends LowPriorityProductItemWriteInstances {
+
+  implicit val productItemPersistsedWrites = new Writes[ProductItem with sorm.Persisted] {
+    def writes(o: ProductItem with sorm.Persisted) =
+      productItemWrites.writes(o) ++ implicitly[OWrites[sorm.Persisted]].writes(o) ++ Json.obj("id" -> o.id)
+  }
 
   def getItemsByParentId(parentId: Long) = {
     Db.query[ProductItem].whereEqual("parent.id", parentId).fetch()

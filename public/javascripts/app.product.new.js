@@ -37,17 +37,16 @@ angular.module('app')
         $scope.getProductUnits();
 
     })
-    .controller('ProductEditController', function ($scope, $http, $location, $log, $routeParams, $uibModal) {
+    .controller('ProductEditController', function ($scope, $http, $location, $log, $routeParams, $uibModal, Data) {
         $scope.title = 'Producto';
         $scope.subtitle = "Editar";
         $scope.product = {};
         $scope.items = {};
 
         $scope.load = function (id) {
-
-           $http.get('/api/products/get/' + id).then(function (response) {
-              $scope.product = response.data
-           })
+            Data.getProduct({productId:id}, function (data) {
+                $scope.product = data
+            });
         };
 
         $scope.productKinds = [];

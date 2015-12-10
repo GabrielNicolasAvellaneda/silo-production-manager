@@ -1,21 +1,21 @@
 package controllers
 
-import javax.inject.Inject
-
+import javax.inject.{Inject, Singleton}
+import akka.actor.ActorSystem
 import models._
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.i18n.{I18nSupport, MessagesApi, Messages, Lang}
-import play.api.mvc.{BodyParsers, Controller, Action}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json._
-import views._
-
-import scala.collection.JavaConverters._
+import play.api.mvc.{Action, BodyParsers, Controller}
 
 /**
  * Created by developer on 04/10/2015.
  */
-class ProductController @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport  {
+@Singleton
+class ProductController @Inject()(val messagesApi: MessagesApi, system: ActorSystem) extends Controller with I18nSupport  {
+
+  val costsUpdaterActor = system.actorOf(CostsUpdaterActor.props, "costsUpdaterActor")
 
   val searchProductForm = Form(
     single("query" -> text)
@@ -31,11 +31,11 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
     Ok(Json.toJson(items))
   }
 
-   def productTree(id: Int) = Action {
-     val product = Product.getById(id)
-     val tree = Product.getTree(product.get)
-     Ok(Json.toJson(tree))
-   }
+  def productTree(id: Int) = Action {
+    val product = Product.getById(id)
+    val tree = Product.getTree(product.get)
+    Ok(Json.toJson(tree))
+  }
 
   def listProducts(all: Boolean) = Action {
     if (all) {
@@ -101,6 +101,7 @@ class ProductController @Inject()(val messagesApi: MessagesApi) extends Controll
         val updateProduct = product.copy()
         val items: Seq[ProductItem] = null
         val updated = Product.update(updateProduct, items)
+        costsUpdaterActor ! CostsUpdaterActor.UpdateCostsMessage(updated)
         Ok(Json.toJson(updated))
       }
     )

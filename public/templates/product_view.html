@@ -83,9 +83,8 @@
                         <tr><th>Cantidad</th><th>Producto</th><th>Costo Unit.</th></tr>
                         </thead>
                         <tbody>
-
-                        <tr ng-repeat="item in items" ng-class="{danger: item.item.calculatedCost <= 0}">
-                            <td>{{item.quantity}}</td><td>{{item.item.code1}} {{item.item.description}}</td><td>{{item.item.calculatedCost}}</td>
+                        <tr ng-repeat="item in items" ng-class="{warning: item.item.calculatedCost <= 0}">
+                            <td>{{item.item}} {{item.quantity}}</td><td><a href="#products/view/{{item.item.id}}">{{item.item.code1}} {{item.item.description}}</a></td><td>{{item.item.calculatedCost}}</td>
                         </tr>
                         </tbody>
 

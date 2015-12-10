@@ -2,7 +2,7 @@
  * Created by developer on 18/10/2015.
  */
 
-angular.module('app', ['ngRoute', 'ngAnimate', 'ui.bootstrap'])
+angular.module('app', ['ngRoute', 'ngAnimate', 'ui.bootstrap', 'dataServices'])
     .directive('onEnterKey', function () {
         return function (scope, element, attrs) {
             element.bind("keydown keypress", function (event) {
