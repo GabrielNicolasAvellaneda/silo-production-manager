@@ -3,22 +3,23 @@
 # ~~~~
 
 # Home page
-GET         /api/products                 controllers.ProductController.listProducts(all: Boolean?=false)
-GET         /api/products/tree/:id        controllers.ProductController.productTree(id: Int)
-POST        /api/products/search          controllers.ProductController.productSearch()
-GET         /api/products/kinds           controllers.ProductController.listProductKinds()
-GET         /api/products/units           controllers.ProductController.listProductUnits()
-POST        /api/products/new             controllers.ProductController.newProduct()
-POST        /api/products/update          controllers.ProductController.updateProduct()
-GET         /api/products/get/:id         controllers.ProductController.getProduct(id: Int)
-GET         /api/products/get-items/:parentId controllers.ProductController.getProductItems(parentId: Int)
-GET         /                             controllers.ApplicationController.index()
+GET         /api/products                            controllers.ProductController.listProducts(all: Boolean?=false)
+GET         /api/products/dashboard                  controllers.ProductController.dashboard()
+GET         /api/products/tree/:id                   controllers.ProductController.productTree(id: Int)
+POST        /api/products/search                     controllers.ProductController.productSearch()
+GET         /api/products/kinds                      controllers.ProductController.listProductKinds()
+GET         /api/products/units                      controllers.ProductController.listProductUnits()
+POST        /api/products/new                        controllers.ProductController.newProduct()
+POST        /api/products/update                     controllers.ProductController.updateProduct()
+GET         /api/products/get/:id                    controllers.ProductController.getProduct(id: Int)
+GET         /api/products/get-items/:parentId        controllers.ProductController.getProductItems(parentId: Int)
+GET         /                                        controllers.ApplicationController.index()
 
 #POST        /products                     controllers.ProductController.search
 
 #GET         /products/new                 controllers.ProductController.newProduct
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                 controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file                            controllers.Assets.versioned(path="/public", file: Asset)
 
 #GET         /*path                        controllers.ApplicationController.catchAll(path:String)

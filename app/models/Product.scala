@@ -8,7 +8,7 @@ import sorm.Persisted
  * Created by developer on 04/10/2015.
  */
 
-case class Product ( code1: String = "",
+case class Product (code1: String = "",
                     code2: Option[String] = None,
                     description: String = "",
                     unit: Option[ProductUnit],
@@ -77,8 +77,28 @@ object Product extends ProductWriteInstances {
   }
 
   def rawMaterialsQuery = {
-    val rawMaterialKind = Db.query[ProductKind].whereEqual("id", 1).fetchOne()
-    Db.query[Product].whereEqual("kind", rawMaterialKind).limit(queryResultLimit)
+    val kind = Db.query[ProductKind].whereEqual("id", 1).fetchOne()
+    Db.query[Product].whereEqual("kind", kind).limit(queryResultLimit)
+  }
+
+  def rawMaterialsQueryCount = {
+    val kind = Db.query[ProductKind].whereEqual("id", 1).fetchOne()
+    Db.query[Product].whereEqual("kind", kind).count()
+  }
+
+  def assembliesQueryCount = {
+    val rawMaterialKind = Db.query[ProductKind].whereEqual("id", 2).fetchOne()
+    Db.query[Product].whereEqual("kind", rawMaterialKind).count()
+  }
+
+  def finishedProductsQueryCount = {
+    val rawMaterialKind = Db.query[ProductKind].whereEqual("id", 3).fetchOne()
+    Db.query[Product].whereEqual("kind", rawMaterialKind).count()
+  }
+
+  def silosQueryCount = {
+    val rawMaterialKind = Db.query[ProductKind].whereEqual("id", 4).fetchOne()
+    Db.query[Product].whereEqual("kind", rawMaterialKind).count()
   }
 
   def getTree(product:Product):ProductTree = {

@@ -21,6 +21,15 @@ class ProductController @Inject()(val messagesApi: MessagesApi, system: ActorSys
     single("query" -> text)
   )
 
+  def dashboard() = Action {
+    val rawMaterials = Product.rawMaterialsQueryCount
+    val finishedProducts = Product.finishedProductsQueryCount
+    val silos = Product.silosQueryCount
+    val assemblies = Product.assembliesQueryCount
+    val dashboardData = DashboardData(rawMaterials = rawMaterials, finishedProducts = finishedProducts, silos = silos, assemblies = assemblies)
+    Ok(Json.toJson(dashboardData))
+  }
+
   def getProduct(id: Int) = Action {
     val product = Product.getById(id).get
     val items = ProductItem.getItemsByParent(product)

@@ -57,10 +57,14 @@ angular.module('app', ['ngRoute', 'ngAnimate', 'ui.bootstrap', 'dataServices'])
         }
     ])
 
-    .controller('DashboardController', function ($scope) {
+    .controller('DashboardController', function ($scope, $http) {
         $scope.title = "Dashboard";
         $scope.subtitle = "Principal";
         $scope.message ='This is the dashboard';
+
+        $http.get('/api/products/dashboard').then(function (result) {
+           $scope.dashboard = result.data;
+        });
     })
 
     .controller('ProductTreeController', function ($scope, $http, $routeParams) {
