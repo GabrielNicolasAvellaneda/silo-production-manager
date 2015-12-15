@@ -11,6 +11,11 @@ case class UpdateProductItemForm (quantity: Double, id: Long, productId: Long, c
 
 object UpdateProductItemForm {
 
+  def toProductItem(item: UpdateProductItemForm, parent: Product) = {
+    val product = Product.getById(item.productId).get
+    ProductItem(parent = parent, quantity = item.quantity, item = product)
+  }
+
   def fromPersistedProductItem(productItem: ProductItem with Persisted) = {
    UpdateProductItemForm(
       quantity = productItem.quantity,

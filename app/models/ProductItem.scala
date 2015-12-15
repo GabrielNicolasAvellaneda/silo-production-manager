@@ -24,6 +24,24 @@ object ProductItem extends LowPriorityProductItemWriteInstances {
       productItemWrites.writes(o) ++ implicitly[OWrites[sorm.Persisted]].writes(o) ++ Json.obj("id" -> o.id)
   }
 
+  def updateItemsForParentId(items:Seq[ProductItem], parentId:Long) = {
+    deleteItemsByParentId(parentId)
+    insertItemsForParentId(items, parentId)
+  }
+
+  def deleteItemsByParentId(parentId: Long) = {
+    val items = getItemsByParentId(parentId)
+    for (item <- items) {
+      Db.delete[ProductItem](item)
+    }
+  }
+
+  def insertItemsForParentId(items:Seq[ProductItem], parentId: Long) = {
+    for (item <- items) {
+      Db.save[ProductItem](item)
+    }
+  }
+
   def getItemsByParentId(parentId: Long) = {
     Db.query[ProductItem].whereEqual("parent.id", parentId).fetch()
   }

@@ -25,6 +25,7 @@ case class UpdateProductForm
 }
 
 object UpdateProductForm {
+
   implicit val updateProductItemFormat = Json.format[UpdateProductItemForm]
   implicit val updateProductFormFormat = Json.format[UpdateProductForm]
 
@@ -35,6 +36,11 @@ object UpdateProductForm {
     val product = Product.getById(id).get
     val updateProduct = product.copy(specificCost = form.specificCost, specificWorkmanHours = form.specificWorkmanHours, description = form.description, kind = kind, unit = unit)
     updateProduct
+  }
+
+  def getProductItems(form: UpdateProductForm) = {
+    val product = Product.getById(form.id).get
+    form.items.map(x => UpdateProductItemForm.toProductItem(x, product))
   }
 
   def fromPersistedProduct(product:Product with Persisted, items: Seq[ProductItem with Persisted]) = {

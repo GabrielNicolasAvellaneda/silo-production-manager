@@ -47,6 +47,7 @@ angular.module('app')
         var createProductItemFromProduct = function (product) {
            return {
                 quantity: 1,
+                id: -1,
                 productId: product.id,
                 code1: product.code1,
                 description: product.description,

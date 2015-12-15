@@ -109,7 +109,9 @@ angular.module('app')
             $log.info($scope.product);
             $http.post('/api/products/update', $scope.product).then(function (response) {
                 $scope.alerts.push({msg: "Se han actualizado los datos del producto y se generó un proceso de actualización de costos."});
+                $scope.load($routeParams.id);
             }, function (response) {
+                alert(response.statusText);
                 console.log(response);})
         };
 

@@ -97,7 +97,7 @@ class ProductController @Inject()(val messagesApi: MessagesApi, system: ActorSys
       },
       form => {
         val updateProduct = UpdateProductForm.getProductWithUpdates(form)
-        val items: Seq[ProductItem] = null
+        val items = UpdateProductForm.getProductItems(form)
         val updatedProduct = Product.update(updateProduct, items)
        // costsUpdaterActor ! CostsUpdaterActor.UpdateCostsMessage(updatedProduct)
         Ok(Json.toJson(updatedProduct))

@@ -2,6 +2,7 @@ package models
 
 import play.api.libs.json.{Writes, OWrites, Json}
 import sorm.Dsl._
+import sorm.Persisted
 
 /**
  * Created by developer on 04/10/2015.
@@ -49,11 +50,10 @@ object Product extends ProductWriteInstances {
   def save(product: Product) = Db.save[Product](product)
 
   def update(product: Product, items: Seq[ProductItem]) = {
-    var updated: Product with sorm.Persisted = null
+    var updated: Product with Persisted = null
     Db.transaction {
       updated = Db.save[Product](product)
-      // TODO: Save productItems
-
+      ProductItem.updateItemsForParentId(items, product.asInstanceOf[Persisted].id)
       updateProductCost(product)
     }
     updated
