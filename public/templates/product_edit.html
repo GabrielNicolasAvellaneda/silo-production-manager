@@ -3,9 +3,10 @@
     <!-- Default panel contents -->
     <div class="panel-heading">Producto</div>
     <div class="panel-body">
-        <div class="alert alert-info alert-dismissible" role="alert">
+        <uib-alert ng-repeat="alert in alerts" type="info" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+        <div ng-show="updated" class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>Producto Actualizado!</strong> Se han actualizado los datos del producto y se generó un proceso de actualización de costos.
+            <strong>Producto Actualizado!</strong>
         </div>
         <form class="form-horizontal" ng-submit="save()">
             <fieldset>
@@ -35,8 +36,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="productKind">Tipo de Producto</label>
                     <div class="col-md-4">
-                        <select ng-model="product.kind" class="form-control" ng-options="kind.id as kind.name for kind in productKinds track by kind.id" title="Tipo de Producto" required="">
-                            <option value>--Seleccionar--</option>
+                        <select ng-model="product.kind" class="form-control" ng-options="kind.id as kind.name for kind in productKinds" title="Tipo de Producto" required="">
                         </select>
                     </div>
                 </div>
@@ -44,9 +44,8 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="productUnit">Unidad</label>
                     <div class="col-md-4">
-                        <select ng-model="product.unit" class="form-control" ng-options="unit.id as unit.name for unit in productUnits track by unit.id" title="Tipo de Unidad" required="">
-                            <option value>--Seleccionar--</option>
-                        </select>
+                        <select ng-model="product.unit" class="form-control" ng-options="unit.id as unit.name for unit in productUnits" title="Tipo de Unidad" required="">
+                         </select>
                     </div>
                 </div>
 
@@ -123,8 +122,8 @@
                             <tr><th>Cantidad</th><th>Producto</th><th>Costo Unit.</th><th>Acciones</th></tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="item in items">
-                                <td>{{item.quantity}}</td><td>{{item.product.description}}</td><td>{{item.product.calculatedCost}}</td>
+                            <tr ng-repeat="item in product.items">
+                                <td>{{item.quantity}}</td><td>{{item.description}}</td><td>{{item.calculatedCost}}</td>
                                 <td><button type="button" ng-click="editItem(item)" class="btn btn-xs btn-info">Editar</button> <button type="button" ng-click="removeItem(item)" class="btn btn-xs btn-danger">Eliminar</button></td>
                             </tr>
                             </tbody>

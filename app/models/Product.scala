@@ -24,27 +24,6 @@ case class Product ( code1: String = "",
   def specificTotalCost = specificCost + specificWorkmanHoursCost
 }
 
-/*
-case class Product (code1:String = "",
-                    code2:String = "",
-                    description:String = "",
-                    unitType:String = "",
-                    productType:String = "",
-                    taxesFactor:Double = 1,
-                    comments:String = "",
-                    specificWorkmanHours:Double = 0,
-                    partsWorkmanHours:Double = 0,
-                    totalWorkmanHours: Double = 0,
-                    totalWorkmanHoursCost:Double = 0,
-                    specificMaterialCost:Double = 0,
-                    partsMaterialCost:Double = 0,
-                    totalMaterialCost:Double = 0,
-                    isDirty:Boolean = false
-                    )
-{
-
-*/
-
 trait LowPriorityWriteInstances {
   implicit val productKindWrites = Json.writes[ProductKind]
   implicit val productUnitWrites = Json.writes[ProductUnit]
@@ -83,7 +62,7 @@ object Product extends ProductWriteInstances {
 
   def all = Db.query[Product]
 
-  def getById(id: Int) = Db.query[Product].whereEqual("id", id).fetchOne()
+  def getById(id: Long) = Db.query[Product].whereEqual("id", id).fetchOne()
 
   // TODO: Accept a map with field, value, operator.
   def search (text: Option[String], kind: Option[Int] = None) = {

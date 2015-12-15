@@ -16,5 +16,5 @@ object ProductUnit extends LowPriorityWriteInstances {
    productUnitWrites.writes(o) ++ implicitly[OWrites[sorm.Persisted]].writes(o)
  }
 
-  def getById(id: Int) = Db.query[ProductUnit].whereEqual("id", id).fetchOne()
+  def getById(id: Long) = Db.query[ProductUnit].whereEqual("id", id).fetchOne()
 }

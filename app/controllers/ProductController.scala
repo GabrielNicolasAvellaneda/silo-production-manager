@@ -22,8 +22,10 @@ class ProductController @Inject()(val messagesApi: MessagesApi, system: ActorSys
   )
 
   def getProduct(id: Int) = Action {
-    val product = Product.getById(id)
-    Ok(Json.toJson(product))
+    val product = Product.getById(id).get
+    val items = ProductItem.getItemsByParent(product)
+    val form = UpdateProductForm.fromPersistedProduct(product, items)
+    Ok(Json.toJson(form))
   }
 
   def getProductItems(id: Int) = Action {

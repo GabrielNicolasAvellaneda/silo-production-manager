@@ -29,44 +29,45 @@ angular.module('app')
             $http.post('/api/products/new', $scope.product).then(function (response) {
                 $location.path('/products/view/' + response.data.id);
             }, function (response) {
-                console.log(response);
-            })
+                console.log(response);})
         };
 
         $scope.getProductKinds();
         $scope.getProductUnits();
 
     })
-    .controller('ProductEditController', function ($scope, $http, $location, $log, $routeParams, $uibModal, Data) {
+    .controller('ProductEditController', function ($scope, $http, $location, $log, $routeParams, $uibModal, Data, $q, $timeout) {
         $scope.title = 'Producto';
         $scope.subtitle = "Editar";
         $scope.product = {};
         $scope.items = {};
+        $scope.alerts = [];
 
         $scope.load = function (id) {
-            Data.getProduct({productId:id}, function (data) {
-                $scope.product = data
+            $http.get('/api/products/get/' + id).then(function (result) {
+                angular.extend($scope.product, result.data);
             });
         };
+
+        $scope.load($routeParams.id);
 
         $scope.productKinds = [];
         $scope.productUnits = [];
 
         $scope.getProductKinds = function () {
-            $http.get('/api/products/kinds').success(function (res) {
-                $scope.productKinds = $scope.productKinds.concat(res);
+            $http.get('/api/products/kinds').then(function (result) {
+                angular.extend($scope.productKinds, result.data);
+            });
+        };
+        $scope.getProductKinds();
+
+        $scope.getProductUnits = function () {
+            $http.get('/api/products/units').then(function (result) {
+               angular.extend($scope.productUnits, result.data);
             });
         };
 
-        $scope.getProductUnits = function () {
-            $http.get('/api/products/units').success(function (data) {
-                $scope.productUnits = $scope.productUnits.concat(data);
-            })
-        };
-
-        $scope.getProductKinds();
         $scope.getProductUnits();
-        $scope.load($routeParams.id);
 
         $scope.selectProduct = false;
         $scope.items = [];
@@ -127,6 +128,15 @@ angular.module('app')
                 $log.info('Modal dismissed at: ' + new Date());
             });
             $scope.selectProduct = false;
+        };
+
+        $scope.closeAlert = function(index) {
+            $scope.alerts.splice(index, 1);
+        };
+
+        $scope.save = function () {
+            $scope.alerts.push({msg: "Se han actualizado los datos del producto y se generó un proceso de actualización de costos."});
+           console.log($scope.product);
         }
     })
     .controller('SelectProductController', function ($scope, $http, $modalInstance) {
