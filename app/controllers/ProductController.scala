@@ -77,7 +77,7 @@ class ProductController @Inject()(val messagesApi: MessagesApi, system: ActorSys
     val productNewResult = request.body.validate[NewProductForm]
     productNewResult.fold(
       errors => {
-        BadRequest(Json.obj("status" -> "KO", "message" -> JsError.toFlatJson(errors)))
+        BadRequest(Json.obj("status" -> "Error", "message" -> JsError.toFlatJson(errors)))
       },
       form => {
         val unit = ProductUnit.getById(form.unit)
@@ -93,18 +93,14 @@ class ProductController @Inject()(val messagesApi: MessagesApi, system: ActorSys
     val productUpdateResult = request.body.validate[UpdateProductForm]
     productUpdateResult.fold(
       errors => {
-        BadRequest(Json.obj("status" -> "KO", "message" -> JsError.toFlatJson(errors)))
+        BadRequest(Json.obj("status" -> "Error", "message" -> JsError.toFlatJson(errors)))
       },
       form => {
-        val id = form.id
-        val unit = ProductUnit.getById(form.unit)
-        val kind = ProductKind.getById(form.kind)
-        val product = Product.getById(id).get
-        val updateProduct = product.copy()
+        val updateProduct = UpdateProductForm.getProductWithUpdates(form)
         val items: Seq[ProductItem] = null
-        val updated = Product.update(updateProduct, items)
-        costsUpdaterActor ! CostsUpdaterActor.UpdateCostsMessage(updated)
-        Ok(Json.toJson(updated))
+        val updatedProduct = Product.update(updateProduct, items)
+       // costsUpdaterActor ! CostsUpdaterActor.UpdateCostsMessage(updatedProduct)
+        Ok(Json.toJson(updatedProduct))
       }
     )
   }

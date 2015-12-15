@@ -28,6 +28,15 @@ object UpdateProductForm {
   implicit val updateProductItemFormat = Json.format[UpdateProductItemForm]
   implicit val updateProductFormFormat = Json.format[UpdateProductForm]
 
+  def getProductWithUpdates(form:UpdateProductForm) = {
+    val id = form.id
+    val unit = ProductUnit.getById(form.unit)
+    val kind = ProductKind.getById(form.kind)
+    val product = Product.getById(id).get
+    val updateProduct = product.copy(specificCost = form.specificCost, specificWorkmanHours = form.specificWorkmanHours, description = form.description, kind = kind, unit = unit)
+    updateProduct
+  }
+
   def fromPersistedProduct(product:Product with Persisted, items: Seq[ProductItem with Persisted]) = {
     UpdateProductForm(
       id = product.id,
