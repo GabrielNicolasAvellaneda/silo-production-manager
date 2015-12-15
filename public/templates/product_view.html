@@ -3,6 +3,53 @@
     <!-- Default panel contents -->
     <div class="panel-heading">Producto</div>
     <div class="panel-body">
+
+        <script type="text/ng-template" id="costsDetailsModal.html">
+            <div class="modal-header">
+                <h4>Composición de Costos</h4>
+            </div>
+            <div class="modal-body">
+               <table class="table-bordered table-condensed table-striped">
+                   <thead>
+                    <tr>
+                       <th>Detalle</th>
+                       <th>Valor</th>
+                       <th>Subtotal</th>
+                   </tr>
+                   </thead>
+                   <tbody>
+                      <tr>
+                           <td>Costo propio</td>
+                           <td>{{product.specificCost | currency }}</td>
+                           <td>{{product.specificCost | currency}}</td>
+                       </tr>
+                       <tr>
+                           <td>Costo horas hombre</td>
+                           <td>{{product.specificWorkmanHours}} horas x {{45 | currency }}</td>
+                           <td>{{product.specificWorkmanHours * 45 | currency }}</td>
+                       </tr>
+                      <tr ng-repeat="item in product.items">
+                          <td>Item {{item.code1}}</td>
+                          <td>{{item.quantity}} x {{item.unitCost | currency}}</td>
+                          <td>{{item.unitCost * item.quantity | currency}}</td>
+                      </tr>
+                      <tr>
+                        <tr>
+                            <th colspan="2">Total</th>
+                            <th>{{product.calculatedCost | currency}}</th>
+                        </tr>
+
+                   </tbody>
+
+               </table>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="ok()">OK</button>
+            </div>
+        </script>
+
         <div class="form-horizontal">
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="id">Id</label>
@@ -36,14 +83,14 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="productKind">Tipo de Producto</label>
                     <div class="col-md-4">
-                        <p class="form-control-static">{{product.kind.name}}</p>
+                        <p class="form-control-static">{{product.kindName}}</p>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="productUnit">Unidad</label>
                     <div class="col-md-4">
-                        <p class="form-control-static">{{product.unit.name}}</p>
+                        <p class="form-control-static">{{product.unitName}}</p>
                     </div>
                 </div>
 
@@ -62,7 +109,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="">Costo Total</label>
+                    <label class="col-md-4 control-label" for=""><a ng-click="showCostsDetails()" href="">Costo Total</a></label>
                     <div class="col-md-4">
                         <p class="form-control-static">{{product.calculatedCost | number : 4}}</p>
                     </div>
@@ -75,7 +122,7 @@
                     </div>
                 </div>
 
-            <div class="row">
+            <div class="row" ng-show="product.kind != 2">
                 <label class="col-md-4 control-label" for="description">Items</label>
                 <div class="col-md-8">
                     <table class="table col-md-8">
@@ -83,8 +130,8 @@
                         <tr><th>Cantidad</th><th>Producto</th><th>Costo Unit.</th></tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="item in items" ng-class="{warning: item.item.calculatedCost <= 0}">
-                            <td>{{item.item}} {{item.quantity}}</td><td><a href="#products/view/{{item.item.id}}">{{item.item.code1}} {{item.item.description}}</a></td><td>{{item.item.calculatedCost}}</td>
+                        <tr ng-repeat="item in product.items" ng-class="{warning: item.item.calculatedCost <= 0}">
+                            <td>{{item.quantity}}</td><td><a href="#/products/view/{{item.productId}}">{{item.code1}} - {{item.description}}</a></td><td>{{item.unitCost | currency}}</td>
                         </tr>
                         </tbody>
 

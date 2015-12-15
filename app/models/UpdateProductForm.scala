@@ -15,9 +15,13 @@ case class UpdateProductForm
   code2: Option[String],
   description: String,
   unit: Long,
+  unitName: String,
   kind: Long,
+  kindName: String,
   specificCost: Double,
   specificWorkmanHours: Double,
+  calculatedCost: Double,
+  price: Double,
   items: Seq[UpdateProductItemForm]
   )
 {
@@ -50,9 +54,13 @@ object UpdateProductForm {
       code2 = product.code2,
       description = product.description,
       unit = product.unit.get.asInstanceOf[Persisted].id,
+      unitName = product.unit.get.name,
       kind = product.kind.get.asInstanceOf[Persisted].id,
+      kindName = product.kind.get.name,
       specificCost = product.specificCost,
       specificWorkmanHours = product.specificWorkmanHours,
+      calculatedCost = product.calculatedCost,
+      price = product.price,
       items = items.map(UpdateProductItemForm.fromPersistedProductItem)
     )
   }

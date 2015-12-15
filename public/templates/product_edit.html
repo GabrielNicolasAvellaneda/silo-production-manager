@@ -127,7 +127,7 @@
                     </div>
                 </script>
 
-                <div class="row">
+                <div class="row" ng-show="product.kind != 2">
                     <label class="col-md-2 control-label" for="description">Items</label>
                     <div class="col-md-10">
                         <button type="button" ng-click="showAddItemModal()" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus"></span> Agregar</button>
@@ -139,7 +139,7 @@
                             <tr ng-repeat="item in product.items">
                                 <td>{{item.quantity}}</td>
                                 <td>{{item.code1}}</td>
-                                <td>{{item.description}}</td><td>{{item.calculatedCost}}</td>
+                                <td>{{item.description}}</td><td>{{item.unitCost}}</td>
                                 <td><button type="button" ng-click="editItem(item)" class="btn btn-xs btn-info">Editar</button> <button type="button" ng-click="removeItem(item)" class="btn btn-xs btn-danger">Eliminar</button></td>
                             </tr>
                             </tbody>

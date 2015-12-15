@@ -63,12 +63,12 @@ angular.module('app', ['ngRoute', 'ngAnimate', 'ui.bootstrap', 'dataServices'])
         $scope.message ='This is the dashboard';
     })
 
-    .controller('ProductTreeController', function ($scope, $http) {
+    .controller('ProductTreeController', function ($scope, $http, $routeParams) {
         $scope.title = "Producto";
         $scope.subtitle = "Estructura";
 
         $scope.drawCircular = function () {
-            circular('#diagram','/api/products/tree/1770');
+            circular('#diagram','/api/products/tree/' + $routeParams.id);
             //$http.get('/api/products/tree/1770').then(function (res))
         };
 

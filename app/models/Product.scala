@@ -20,7 +20,7 @@ case class Product ( code1: String = "",
 {
   def price = calculatedCost * 1.41
 
-  def specificWorkmanHoursCost = specificWorkmanHours * 15
+  def specificWorkmanHoursCost = specificWorkmanHours * 45
 
   def specificTotalCost = specificCost + specificWorkmanHoursCost
 }
@@ -47,7 +47,10 @@ object Product extends ProductWriteInstances {
 
   val queryResultLimit = 40
 
-  def save(product: Product) = Db.save[Product](product)
+  def save(product: Product) = {
+    val saved = Db.save[Product](product)
+    updateProductCost(saved)
+  }
 
   def update(product: Product, items: Seq[ProductItem]) = {
     var updated: Product with Persisted = null
@@ -58,7 +61,6 @@ object Product extends ProductWriteInstances {
     }
     updated
   }
-
 
   def all = Db.query[Product]
 

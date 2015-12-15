@@ -82,7 +82,7 @@ class ProductController @Inject()(val messagesApi: MessagesApi, system: ActorSys
       form => {
         val unit = ProductUnit.getById(form.unit)
         val kind = ProductKind.getById(form.kind)
-        val product = Product(form.code1, form.code2, form.description, unit, kind)
+        val product = Product(form.code1, form.code2, form.description, unit, kind, form.specificCost, form.specificWorkmanHours)
         val result = Product.save(product)
         Ok(Json.toJson(result))
       }
@@ -99,7 +99,7 @@ class ProductController @Inject()(val messagesApi: MessagesApi, system: ActorSys
         val updateProduct = UpdateProductForm.getProductWithUpdates(form)
         val items = UpdateProductForm.getProductItems(form)
         val updatedProduct = Product.update(updateProduct, items)
-       // costsUpdaterActor ! CostsUpdaterActor.UpdateCostsMessage(updatedProduct)
+        costsUpdaterActor ! CostsUpdaterActor.UpdateCostsMessage(updatedProduct)
         Ok(Json.toJson(updatedProduct))
       }
     )
