@@ -77,36 +77,46 @@ object Product extends ProductWriteInstances {
   }
 
   def rawMaterialsQuery = {
-    val kind = Db.query[ProductKind].whereEqual("id", 1).fetchOne()
+    val kind = Db.query[ProductKind].whereEqual("id", 2).fetchOne()
     Db.query[Product].whereEqual("kind", kind).limit(queryResultLimit)
   }
 
-  def rawMaterialsQueryCount = {
-    val kind = Db.query[ProductKind].whereEqual("id", 1).fetchOne()
+  def countByKind(id:Int) = {
+    val kind = Db.query[ProductKind].whereEqual("id", id).fetchOne()
     Db.query[Product].whereEqual("kind", kind).count()
   }
 
+  def rawMaterialsQueryCount = {
+    countByKind(2)
+ }
+
   def assembliesQueryCount = {
-    val rawMaterialKind = Db.query[ProductKind].whereEqual("id", 2).fetchOne()
-    Db.query[Product].whereEqual("kind", rawMaterialKind).count()
+    countByKind(3)
   }
 
   def finishedProductsQueryCount = {
-    val rawMaterialKind = Db.query[ProductKind].whereEqual("id", 3).fetchOne()
-    Db.query[Product].whereEqual("kind", rawMaterialKind).count()
+    countByKind(4)
   }
 
   def silosQueryCount = {
-    val rawMaterialKind = Db.query[ProductKind].whereEqual("id", 4).fetchOne()
-    Db.query[Product].whereEqual("kind", rawMaterialKind).count()
+    countByKind(5)
   }
 
-  def getTree(product:Product):ProductTree = {
+  def getTree(product:Product) : ProductTree = {
+   getTree(product, 1, Int.MaxValue, 0)
+  }
 
-    val tree = ProductTree(product, Seq())
-    val productItems = ProductItem.getItemsByParent(product)
-    productItems foreach { x =>
-      tree.children = tree.children :+ getTree(x.item)
+  def getTree(product:Product, maxDepth:Int) : ProductTree = {
+    getTree(product, 1, maxDepth, 0)
+  }
+
+  def getTree(product:Product, quantity:Double, maxDepth:Int, depth:Int):ProductTree = {
+    val tree = ProductTree(product, quantity, Seq())
+    if (maxDepth > depth) {
+      val productItems = ProductItem.getItemsByParent(product)
+      productItems foreach { x =>
+        tree.children = tree.children :+ getTree(x.item, x.quantity, maxDepth, depth + 1)
+      }
     }
     tree
   }

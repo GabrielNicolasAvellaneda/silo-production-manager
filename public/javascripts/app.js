@@ -71,16 +71,11 @@ angular.module('app', ['ngRoute', 'ngAnimate', 'ui.bootstrap', 'dataServices'])
         $scope.title = "Producto";
         $scope.subtitle = "Estructura";
 
-        $scope.drawCircular = function () {
-            circular('#diagram','/api/products/tree/' + $routeParams.id);
-            //$http.get('/api/products/tree/1770').then(function (res))
+        $scope.drawTree = function () {
+            drawTree('#diagram', '/api/products/tree/' + $routeParams.id);
+            //drawTree('#diagram','/api/products/tree/1770ll');
         };
 
-        $scope.drawCartesian = function () {
-            cartesian('#diagram', '/api/products/tree/1770');
-        };
-
-        $scope.drawCircular();
-        //$scope.drawCartesian();
+        $scope.drawTree();
     });
 
